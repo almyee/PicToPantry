@@ -1,0 +1,21 @@
+names:
+- avocado
+- bacon
+- butter
+- cheese
+- eggs
+- lemon
+- milk
+- pepper
+- tomatoes
+- yogurt
+nc: 10
+roboflow:
+  license: CC BY 4.0
+  project: fridge-objects
+  url: https://universe.roboflow.com/fooddetection-essdj/fridge-objects/dataset/1
+  version: 1
+  workspace: fooddetection-essdj
+test: ../test/images
+train: ../train/images
+val: ../valid/images
