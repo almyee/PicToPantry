@@ -1,3 +1,7 @@
+'''
+currently using this file
+all commands ran in here to download dataset, get model set up, train model, test model
+'''
 # download dataset from roboflow
 # !pip install roboflow
 # https://universe.roboflow.com/yolov5-wdptz/food-recognition-khrue/dataset/1

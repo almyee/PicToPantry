@@ -1,3 +1,8 @@
+# https://www.kaggle.com/datasets/kmader/food41/data
+'''
+not currently using this
+Kaggle used to downloaded datasets and code
+'''
 # Install dependencies as needed:
 # pip install kagglehub[pandas-datasets]
 # import kagglehub
@@ -23,6 +28,7 @@
 
 # # Download latest version
 # path = kagglehub.dataset_download("kmader/food41")
+# this dataset above is for Food Images (Food-101)
 
 # print("Path to dataset files:", path)
 
