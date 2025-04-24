@@ -22,7 +22,7 @@ import cv2
 # results[0].show()  # display the image with boxes
 
 # Load trained model
-model = YOLO("/root/ecs271/runs/detect/train5/weights/best.pt")
+model = YOLO("/root/ecs271_files/PicToPantry/project/runs/detect/train5/weights/best.pt")
 
 # Run inference on a custom image
 # results = model("/root/ecs271/project/Food-Recognition-1/test/images/006563_jpg.rf.de205ac2d42298c6478a0c604da7fb9b.jpg", conf=0.1, save=True)
@@ -30,7 +30,7 @@ model = YOLO("/root/ecs271/runs/detect/train5/weights/best.pt")
 # results = model("/root/ecs271/project/Food-Recognition-1/test/images", save=True) #can also test on a folder
 '''Food_Recognition-1/test/images folder input into the model Results saved to /root/ecs271/runs/detect/predict8
 '''
-results = model("/root/ecs271/project/images", save=True)
+results = model("/root/ecs271_files/PicToPantry/project/images", save=True)
 '''/root/ecs271/project/images my own test images folder input into model Results saved to /root/ecs271/runs/detect/predict11
 '''
 # /root/ecs271/project/images
@@ -57,6 +57,13 @@ results = model("/root/ecs271/project/images", save=True)
 # /root/ecs271/project/Food-Recognition-1/data.yaml
 # /root/ecs271/project/Fridge-objects-1/data.yaml
 
+model.predict(source='/root/ecs271_files/PicToPantry/project/images', project='/root/ecs271_files/PicToPantry/project/runs/detect', name='PicToPantry')
+
+# yolo detect predict model=/root/ecs271_files/PicToPantry/project/runs/detect/train5/weights/best.pt source=/root/ecs271_files/PicToPantry/project/images data=/root/ecs271_files/PicToPantry/project/Food-Recognition-1/data.yaml project=/root/ecs271_files/PicToPantry/project/runs/detect name=predict13
+'''
+ran command above to switch where results were saving, recent output on new standalone images are at this path:
+/root/ecs271_files/PicToPantry/project/runs/detect/predict13
+'''
 '''if terminal every stops showing what i type:
 Run 'stty sane' if terminal breaks
 '''
