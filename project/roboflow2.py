@@ -62,3 +62,33 @@ ran command above to switch where results were saving, 4/24 output on new standa
 if terminal every stops showing what i type:
 Run 'stty sane' if terminal breaks
 '''
+
+# from ultralytics import YOLO
+
+# model = YOLO('runs/detect/train5/weights/best.pt')
+# metrics = model.val(data='./Food-Recognition-1/data.yaml')
+
+# # metrics will be an object with results
+# print(metrics.box.map)         # mAP@0.5
+# print(metrics.box.map50)       # mAP@0.5
+# print(metrics.box.map75)       # mAP@0.75
+# print(metrics.box.maps)        # list of mAP per class
+# print(metrics.box.precision)   # overall precision
+# print(metrics.box.recall)      # overall recall
+
+
+'''
+yolo detect val model=runs/detect/train/weights/best.pt data=your_data.yaml
+✅ This will recompute:
+mAP@0.5
+mAP@0.5:0.95
+precision
+recall
+per-class metrics
+confusion matrix
+Results will print in terminal and saved under:
+bash
+Copy
+Edit
+runs/detect/val/
+'''

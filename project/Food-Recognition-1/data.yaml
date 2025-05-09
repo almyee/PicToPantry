@@ -504,6 +504,6 @@ roboflow:
   url: https://universe.roboflow.com/yolov5-wdptz/food-recognition-khrue/dataset/1
   version: 1
   workspace: yolov5-wdptz
-test: ../test/images
-train: ../train/images
-val: ../valid/images
+test: ./test/images
+train: ./train/images
+val: ./valid/images
