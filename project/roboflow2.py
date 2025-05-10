@@ -63,19 +63,6 @@ if terminal every stops showing what i type:
 Run 'stty sane' if terminal breaks
 '''
 
-# from ultralytics import YOLO
-
-# model = YOLO('runs/detect/train5/weights/best.pt')
-# metrics = model.val(data='./Food-Recognition-1/data.yaml')
-
-# # metrics will be an object with results
-# print(metrics.box.map)         # mAP@0.5
-# print(metrics.box.map50)       # mAP@0.5
-# print(metrics.box.map75)       # mAP@0.75
-# print(metrics.box.maps)        # list of mAP per class
-# print(metrics.box.precision)   # overall precision
-# print(metrics.box.recall)      # overall recall
-
 
 '''
 yolo detect val model=runs/detect/train/weights/best.pt data=your_data.yaml
