@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 10
+names: ['burger', 'donut', 'frenchfries', 'ikan goreng', 'kangkung', 'kopi hitam', 'nasi', 'pizza', 'sate', 'telur balado']
+
+roboflow:
+  workspace: workeveryday
+  project: multi-object-food-detection
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/workeveryday/multi-object-food-detection/dataset/1
