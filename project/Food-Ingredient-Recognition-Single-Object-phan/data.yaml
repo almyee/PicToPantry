@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 38
+names: ['-', 'almond', 'apple', 'avocado', 'beef', 'bell pepper', 'blueberry', 'bread', 'broccoli', 'butter', 'carrot', 'cheese', 'chilli', 'cookie', 'corn', 'cucumber', 'egg', 'eggplant', 'garlic', 'lemon', 'milk', 'mozarella cheese', 'mushroom', 'mussel', 'onion', 'oyster', 'parmesan cheese', 'pasta', 'pork rib', 'potato', 'salmon', 'scallop', 'shrimp', 'strawberry', 'toast bread', 'tomato', 'tuna', 'yogurt']
+
+roboflow:
+  workspace: thanh-huy-phan
+  project: food-ingredient-recognition
+  version: 4
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/thanh-huy-phan/food-ingredient-recognition/dataset/4
