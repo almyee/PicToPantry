@@ -1,49 +1,52 @@
-
-# python3 train.py       # Fine-tunes Faster R-CNN
-
-import os
 import torch
+from engine import train_one_epoch, evaluate
+from datasets.coco_dataset import CocoDataset
+import transforms as T
+import utils
 import torchvision
-from torchvision.models.detection import fasterrcnn_resnet50_fpn
-from torchvision.datasets import CocoDetection
-from torchvision.transforms import ToTensor
-from torch.utils.data import DataLoader
-import torchvision.transforms.v2 as T
-from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+def get_transform(train):
+    transforms = [T.ToTensor()]
+    if train:
+        transforms.append(T.RandomHorizontalFlip(0.5))
+    return T.Compose(transforms)
 
-# Config
-num_classes = 498  # change to match your dataset
-train_images = "train/images"
-train_ann = "annotations/instances_train.json"
+def get_model(num_classes):
+    model = torchvision.models.detection.maskrcnn_resnet50_fpn(pretrained=True)
 
-# Dataset & DataLoader
-transforms = T.Compose([T.ToImage(), T.RandomHorizontalFlip(0.5)])
-train_dataset = CocoDetection(train_images, train_ann, transforms=transforms)
-train_loader = DataLoader(train_dataset, batch_size=4, shuffle=True, collate_fn=lambda x: tuple(zip(*x)))
+    in_features = model.roi_heads.box_predictor.cls_score.in_features
+    model.roi_heads.box_predictor = torchvision.models.detection.faster_rcnn.FastRCNNPredictor(
+        in_features, num_classes)
 
-# Model
-model = fasterrcnn_resnet50_fpn(pretrained=True)
-in_features = model.roi_heads.box_predictor.cls_score.in_features
-model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
-model.to(device)
+    in_features_mask = model.roi_heads.mask_predictor.conv5_mask.in_channels
+    hidden_layer = 256
+    model.roi_heads.mask_predictor = torchvision.models.detection.mask_rcnn.MaskRCNNPredictor(
+        in_features_mask, hidden_layer, num_classes)
 
-# Optimizer
-params = [p for p in model.parameters() if p.requires_grad]
-optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
+    return model
 
-# Training loop (1 epoch for test)
-model.train()
-for images, targets in train_loader:
-    images = list(image.to(device) for image in images)
-    targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
+def main():
+    device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
-    loss_dict = model(images, targets)
-    losses = sum(loss for loss in loss_dict.values())
-    optimizer.zero_grad()
-    losses.backward()
-    optimizer.step()
+    dataset = CocoDataset("Food-Recognition-1/train/images", "Food-Recognition-1/annotations/instances_train.json", get_transform(train=True))
+    dataset_valid = CocoDataset("Food-Recognition-1/valid/images", "Food-Recognition-1/annotations/instances_valid.json", get_transform(train=False))
 
-print("Training done. Saving model...")
-torch.save(model.state_dict(), "fasterrcnn_finetuned.pth")
+    data_loader = torch.utils.data.DataLoader(dataset, batch_size=2, shuffle=True, num_workers=4, collate_fn=utils.collate_fn)
+    data_loader_valid = torch.utils.data.DataLoader(dataset_valid, batch_size=1, shuffle=False, num_workers=4, collate_fn=utils.collate_fn)
+
+    num_classes = 1 + len(dataset.coco.getCatIds())  # +1 for background
+    model = get_model(num_classes).to(device)
+
+    params = [p for p in model.parameters() if p.requires_grad]
+    optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
+    lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
+
+    for epoch in range(10):
+        train_one_epoch(model, optimizer, data_loader, device, epoch, print_freq=10)
+        lr_scheduler.step()
+        evaluate(model, data_loader_valid, device=device)
+
+    torch.save(model.state_dict(), "fasterrcnn_finetuned.pth")
+
+if __name__ == "__main__":
+    main()
