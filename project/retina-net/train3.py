@@ -253,28 +253,28 @@ def main():
     # )
     # dataset = Subset(dataset, range(10))
     dataset = Subset(dataset, range(100))  # try 500 first, then 1000, etc.
-    # data_loader = DataLoader(
-    #     dataset,
-    #     batch_size=2,
-    #     shuffle=True,
-    #     collate_fn=collate_fn,
-    #     num_workers=2,
-    #     pin_memory=False,
-    #     persistent_workers=False
-    # )
     data_loader = DataLoader(
-    dataset,
-        batch_size=4,  # Adjust based on GPU memory
+        dataset,
+        batch_size=2,
         shuffle=True,
         collate_fn=collate_fn,
-        num_workers=4,  # Increase if CPU allows
-        pin_memory=True,
-        persistent_workers=True
+        num_workers=2,
+        pin_memory=False,
+        persistent_workers=False
     )
+    # data_loader = DataLoader(
+    # dataset,
+    #     batch_size=4,  # Adjust based on GPU memory
+    #     shuffle=True,
+    #     collate_fn=collate_fn,
+    #     num_workers=4,  # Increase if CPU allows
+    #     pin_memory=True,
+    #     persistent_workers=True
+    # )
 
     torch.backends.cudnn.benchmark = False
-    # device = torch.device('cpu')  # use CPU for this test
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device('cpu')  # use CPU for this test
+    # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
     weights = RetinaNet_ResNet50_FPN_Weights.DEFAULT
@@ -304,6 +304,7 @@ def main():
 
         for batch_idx, (images, targets) in enumerate(tqdm(data_loader, desc=f"Epoch {epoch + 1}")):
             try:
+                t0 = time.time()
                 images = [img.to(device) for img in images]
                 targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
                 if any(len(t["boxes"]) == 0 for t in targets):
@@ -337,7 +338,8 @@ def main():
 
                 if (batch_idx + 1) % 10 == 0:
                     print(f"Batch {batch_idx + 1}/{len(data_loader)} - Loss: {losses.item():.4f}", flush=True)
-
+                    t1 = time.time()
+                    print(f"Batch {batch_idx + 1} loaded and processed in {t1 - t0:.2f}s")
             except Exception as e:
                 print(f"Error in batch {batch_idx + 1}: {e}", flush=True)
                 continue
