@@ -13,11 +13,18 @@ import os
 from train3 import CocoDataset, get_transform
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Config
-num_classes = 498
-val_images = "Food-Recognition-1/valid/images"
-val_ann = "Food-Recognition-1/annotations/instances_valid.json"
-model_path = "fasterrcnn_epoch_10.pth"
+#change to fine-tuned model with specific training dataset
+# Config Food-Recognition-1 dataset
+# num_classes = 498
+# val_images = "Food-Recognition-1/valid/images"
+# val_ann = "Food-Recognition-1/annotations/instances_valid.json"
+# model_path = "fasterrcnn_epoch_10.pth"
+
+# 295 classes for Pic2Pantry dataset
+num_classes = 295
+val_images = "Pic2Pantry-1/valid"
+val_ann = "Pic2Pantry-1/valid/_annotations.coco.json"
+model_path = "fasterrcnn_epoch_10.pth" #change this after fine-tuning on this dataset
 
 # Dataset
 # transforms = T.Compose([T.ToImage()])
@@ -71,7 +78,7 @@ for images, targets in val_loader:
         img_ids.append(img_id)
 
 # Save results
-res_file = "fasterrcnn_results.json"
+res_file = "fasterrcnn_results-PP-1.json"
 with open(res_file, "w") as f:
     json.dump(coco_results, f, indent=2)
 
