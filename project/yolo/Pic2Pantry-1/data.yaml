@@ -301,6 +301,6 @@ roboflow:
   url: https://universe.roboflow.com/ecs271/pic2pantry/dataset/1
   version: 1
   workspace: ecs271
-test: ../test/images
-train: ../train/images
-val: ../valid/images
+test: /root/ecs271_files/PicToPantry/project/yolo/Pic2Pantry-1/test/images #../test/images
+train: /root/ecs271_files/PicToPantry/project/yolo/Pic2Pantry-1/train/images #../train/images
+val: /root/ecs271_files/PicToPantry/project/yolo/Pic2Pantry-1/valid/images #../valid/images
