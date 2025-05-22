@@ -21,10 +21,10 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # model_path = "fasterrcnn_epoch_10.pth"
 
 # 295 classes for Pic2Pantry dataset
-num_classes = 295
+num_classes = 296
 val_images = "Pic2Pantry-1/valid"
 val_ann = "Pic2Pantry-1/valid/_annotations.coco.json"
-model_path = "fasterrcnn_epoch_10.pth" #change this after fine-tuning on this dataset
+model_path = "fasterrcnn-PP_epoch_10.pth" #change this after fine-tuning on this dataset
 
 # Dataset
 # transforms = T.Compose([T.ToImage()])
@@ -106,4 +106,19 @@ DONE (t=2.51s).
  Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
  Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.088
  Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.195
+
+ran 5/22 on Pic2Pantry-1 dataset
+ DONE (t=2.08s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.092
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.135
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.105
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.040
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.095
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.195
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.205
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.205
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.096
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.210
 '''

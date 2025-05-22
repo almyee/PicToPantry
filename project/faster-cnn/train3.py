@@ -1,4 +1,4 @@
-# currently used convert_to_cocoBB.py and this file to train, so far no error but still running
+# currently used convert_to_cocoBB.py and this file to train
 import torch
 from torch.utils.data import DataLoader
 import torchvision
@@ -8,20 +8,7 @@ import os
 import numpy as np
 import json
 
-# Your custom dataset class here (similar to what you already have)
-# class CocoDataset(torch.utils.data.Dataset):
-#     def __init__(self, root, annotation_file, transforms=None):
-#         self.root = root
-#         self.transforms = transforms
-#         with open(annotation_file) as f:
-#             self.coco = json.load(f)
-
-#         self.image_info = {img['id']: img for img in self.coco['images']}
-#         self.annotations = {}
-#         for ann in self.coco['annotations']:
-#             img_id = ann['image_id']
-#             self.annotations.setdefault(img_id, []).append(ann)
-#         self.ids = list(self.image_info.keys())
+# Custom dataset class here 
 class CocoDataset(torch.utils.data.Dataset):
     def __init__(self, root, annotation_file, transforms=None):
         self.root = root
@@ -83,11 +70,11 @@ def collate_fn(batch):
 
 def main():
     # Paths to your images and COCO annotation JSON
-    dataset_root = "Food-Recognition-1/train/images"
-    annotation_file = "Food-Recognition-1/annotations/instances_train.json"
+    dataset_root = "Pic2Pantry-1/train" #"Food-Recognition-1/train/images"
+    annotation_file = "Pic2Pantry-1/train/_annotations.coco.json" #"Food-Recognition-1/annotations/instances_train.json"
 
     # Number of classes (including background)
-    num_classes = 498 #YOUR_NUM_CLASSES  # e.g., 2 if only one class + background
+    num_classes = 296 #498 #YOUR_NUM_CLASSES  # e.g., 2 if only one class + background
 
     dataset = CocoDataset(dataset_root, annotation_file, transforms=get_transform())
     data_loader = DataLoader(dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
@@ -129,7 +116,7 @@ def main():
         print(f"Epoch {epoch+1} finished, Loss: {epoch_loss:.4f}")
 
         # Save checkpoint every epoch
-        torch.save(model.state_dict(), f"fasterrcnn_epoch_{epoch+1}.pth")
+        torch.save(model.state_dict(), f"fasterrcnn-PP_epoch_{epoch+1}.pth")
 
         # TODO: Add validation loop here if you want
 
